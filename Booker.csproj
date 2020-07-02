@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KeithBalaam.Extensions">
+      <HintPath>..\KeithBalaam.Common\bin\Debug\KeithBalaam.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -46,7 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Args.cs" />
+    <Compile Include="ArgsParser.cs" />
+    <Compile Include="BookCourt.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,7 +63,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Args.cs.vsspell">
-      <DependentUpon>Args.cs</DependentUpon>
+      <DependentUpon>ArgsParser.cs</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
-using Booker.Properties;
 using Newtonsoft.Json;
 
 namespace Booker
 {
     public class Global
     {
-        const string JSON_EXTENSION = ".JSON";
+        public const string JSON_EXTENSION             = ".json";
+        public const string RUN_TIME_PARAMS_FILE_NAME  = "runtimeparams.json";
 
         public Global()
         {
@@ -15,20 +15,28 @@ namespace Booker
         }
 
         #region Public properties.
-        int[] Courts                        { get; set; } = new int[] {1,2,3,4,5,6,7};
+        public int[] Courts             { get; set; } = new int[] {1,2,3,4,5,6,7};
 
-        DateTime DateOfGame                 { get; set; } = DateTime.Today;
+        public DateTime GameDate        { get; set; } = DateTime.Today.AddDays(14);
 
-        TimeSpan TimeOfGame                 { get; set; } = new TimeSpan(9, 0, 0);
+        public TimeSpan GameTime        { get; set; } = new TimeSpan(9, 0, 0);
 
-        TimeSpan StartRequestingCourtAt     { get; set; } = new TimeSpan(8, 0, 0);
+        public TimeSpan GameLength      { get; set; } = new TimeSpan(1, 30, 0);
 
-        DateTime StartRequestingCourtOn     { get; set; } = DateTime.Today.AddDays(14);
+        public TimeSpan StartRequests   { get; set; } = new TimeSpan(8, 0, 0);
 
-
-
-        int LengthOfGameInMinutes { get; set; }
+        public string UserId            { get; set; }
+        
+        public string Password          { get; set; }
         #endregion
+        
+        public bool IsValid()
+        {
+            bool result = true;
+
+            return result;
+        }
+        
         #region Serialize/Deserialize methods.
         public bool Serialize(string fileNamePath)
         {
@@ -44,6 +52,7 @@ namespace Booker
             }
             catch(Exception ex)
             {
+                Console.WriteLine($"We had a problem serialising Run-time parameters file: {ex}");
                 result = false;
             }
             return result;
@@ -56,12 +65,12 @@ namespace Booker
             try
             {
                 // Make sure it's a JSON file.
-                string ext = Path.GetExtension(Settings.Default.RuntimeSettingFile).ToUpper();
+                string ext = Path.GetExtension(fileNamePath).ToLower();
 
                 if(ext == JSON_EXTENSION)
                 {
                     // Make sure that the file exists.
-                    if(File.Exists(Settings.Default.RuntimeSettingFile))
+                    if(File.Exists(fileNamePath))
                     {
                         using(StreamReader file = File.OpenText(fileNamePath))
                         {
@@ -70,10 +79,14 @@ namespace Booker
                         }
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"Run-time parameters file must be a JSON file not '{ext}'");
+                }
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"We had a problem de-serialising Run-time parameters file: '{fileNamePath}'. Error: {ex}");
             }
 
             return global;
